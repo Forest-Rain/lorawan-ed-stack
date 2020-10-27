@@ -86,7 +86,6 @@ LoRaWAN-ED-Stack软件包在LoRaWAN开源协议栈[LoRaMAC-Node](https://github.
       - LoRaWAN End-Device regional parameters实现，主要包括
         - [x] CN470
         - [x] 自定义CN470S
-        - [ ] LinkWAN-CN470
         - [ ] EU868
         - [ ] AS923
         - [ ] US915
