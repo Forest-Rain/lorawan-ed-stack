@@ -109,10 +109,12 @@ LoRaWAN-ED-Stack软件包在LoRaWAN开源协议栈[LoRaMAC-Node](https://github.
    - ulog组件，开启后，可得到更详细的日志提示信息等
       - lorawan-raido-driver内部使用ulog接口，若使能ulog，则可看到更多调试输出信息
       - lorawan-ed-test-shell.c使用ulog接口，用于打印测试信息
-> RT-Thread Components --->
->    Utiliess --->
->        [*] Enable ulog
-> [*] Enable ISR log.
+```
+ RT-Thread Components --->
+    Utiliess --->
+        [*] Enable ulog
+            [*] Enable ISR log.
+```
 
 ## 2.2 获取软件包
  使能LoRaWAN-ED-Stack软件包，根据实际需要，配置LoRaWAN End-Device的相关参数:
@@ -149,9 +151,9 @@ lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Dev
 
 | 序号 | 命令类型 | finish命令 | 说明 |
 | --- | --- | --- | --- |
-| 1 | 参数设置与读取 | lorawan deveui <para1> | <br />设置\读取DevEUI<br />
-- 有<para1>，设置DevEUI的值,16进制，8个字节<br />
-- 无 para1，读取当前DevEUI的值<br /> |
+| 1 | 参数设置与读取 | lorawan deveui <para1> |设置\读取DevEUI<br />
+ <br />- 有<para1>，设置DevEUI的值,16进制，8个字节<br />
+ <br />- 无 para1，读取当前DevEUI的值<br /> |
 | 2 |  | lorawan appeui <para1> | <br />设置\读取AppEUI<br />
 - 有<para1>，设置AppEUI的值,16进制，8个字节<br />
 - 无 para1，读取当前AppEUI的值<br /> |
