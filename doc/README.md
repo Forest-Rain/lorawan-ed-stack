@@ -21,38 +21,38 @@ LoRaWAN-ED-Stack软件包在LoRaWAN开源协议栈[LoRaMAC-Node](https://github.
             - [ ] EU868
             - [ ] AS923
             - [ ] US915
-            - [x] 缺省上行速率（LoRaWAN Default Datarate）
-            - [x] 缺省信道列表（Channel Mask）
-                  - LoRaWAN MAC主要配置参数：
+        - [x] 缺省上行速率（LoRaWAN Default Datarate）
+        - [x] 缺省信道列表（Channel Mask）
+      - LoRaWAN MAC主要配置参数：
         - 设备类型(Device Type)
             - [x] Class A
             - [ ] Class B
             - [x] Class C
-         - LoRaWAN数据消息类型(Data Message Type)
+        - LoRaWAN数据消息类型(Data Message Type)
             - [x] 确认帧(Confirm Frame)
             - [x] 非确认帧(Unconfirm Frame)
             - [x] LoRaWAN应用端口号（Application Fport）
             - [x] ADR功能
       - LoRaWAN应用层当前提供如下应用实例
-            - [x] lorawan-ed-test-shell
-                - 用于配置并测试LoRaWAN End-Device Class A \ Class C
+        - [x] lorawan-ed-test-shell
+            - 用于配置并测试LoRaWAN End-Device Class A \ Class C
       - 功能按需裁剪
-            - [x] 可通过宏定义对ClassA、ClassB、Class C、OTAA、ABP等功能进行灵活裁剪
-            - [x] 可通过宏定义对日志信息裁剪，详细的协议层日志交互信息，便于前期调试、学习等
-                - [x] APS层（入网、通信、用户数据包等）
-                - [x] MAC层（MAC请求、MAC命令等）
-                - [x] PHY（上下行通信频率、速率等）等的日志输出
+        - [x] 可通过宏定义对ClassA、ClassB、Class C、OTAA、ABP等功能进行灵活裁剪
+        - [x] 可通过宏定义对日志信息裁剪，详细的协议层日志交互信息，便于前期调试、学习等
+            - [x] APS层（入网、通信、用户数据包等）
+            - [x] MAC层（MAC请求、MAC命令等）
+            - [x] PHY（上下行通信频率、速率等）等的日志输出
       - [x] 支持IDE工具
-            - [x] RT-Studio 1.1.4
-            - [x] MDK 5
+        - [x] RT-Studio 1.1.4
+        - [x] MDK 5
       - 参数掉电保存
-            - LoRaWAN的配置参数支持掉电保存
+        - LoRaWAN的配置参数支持掉电保存
       - 对接LoRaWAN服务器平台
-            - [x] 利尔达unicore服务器
-                - [ ] CN470 & Class A
-                - [x] CN470自定义同频 & Class A\C
-            - [x] 腾讯云IoT Explorer
-                - [x] CN470 & Class A\C
+        - [x] 利尔达unicore服务器
+            - [ ] CN470 & Class A
+            - [x] CN470自定义同频 & Class A\C
+        - [x] 腾讯云IoT Explorer
+            - [x] CN470 & Class A\C
 
 ## 1.1 LoRaWAN-ED-Stack软件包组织结构
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603760044028-1261956a-0c9e-41d7-8d79-75f306d36a95.png#align=left&display=inline&height=577&margin=%5Bobject%20Object%5D&name=image.png&originHeight=577&originWidth=864&size=50371&status=done&style=none&width=864)
@@ -151,20 +151,16 @@ lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Dev
 | --- | --- | --- | --- |
 | 1 | 参数设置与读取 | lorawan deveui <para1> | 设置\读取DevEUI<br />
 - 有<para1>，设置DevEUI的值,16进制，8个字节<br />
-- 无 para1，读取当前DevEUI的值<br />
- |
+- 无 para1，读取当前DevEUI的值<br /> |
 | 2 |  | lorawan appeui <para1> | 设置\读取AppEUI<br />
 - 有<para1>，设置AppEUI的值,16进制，8个字节<br />
-- 无 para1，读取当前AppEUI的值<br />
- |
+- 无 para1，读取当前AppEUI的值<br /> |
 | 3 |  | lorawan appkey <para1> | 设置\读取AppKey<br />
 - 有<para1>，设置AppKey的值,16进制，16个字节<br />
-- 无 para1，读取当前AppKey的值<br />
- |
+- 无 para1，读取当前AppKey的值<br /> |
 | 4 |  | lorawan devaddr <para1> | 设置\读取DevAddr<br />
 - 有<para1>，设置DevAddr的值,16进制，4个字节,仅适用于ABP<br />
-- 无 para1，读取当前DevAddr的值<br />
- |
+- 无 para1，读取当前DevAddr的值<br /> |
 | 5 |  | lorawan appskey <para1> | 设置\读取AppSKey
 - 有<para1>，设置AppSKey的值,16进制，16个字节,仅适用于ABP
 - 无 para1，读取当前AppSKey的值
