@@ -49,7 +49,7 @@ LoRaWAN-ED-Stack软件包在LoRaWAN开源协议栈[LoRaMAC-Node](https://github.
         - LoRaWAN的配置参数支持掉电保存
       - 对接LoRaWAN服务器平台
         - [x] 利尔达unicore服务器
-            - [ ] CN470 & Class A
+            - [x] CN470 & Class A
             - [x] CN470自定义同频 & Class A\C
         - [x] 腾讯云IoT Explorer
             - [x] CN470 & Class A\C
@@ -149,71 +149,63 @@ lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Dev
 
 | 序号 | 命令类型 | finish命令 | 说明 |
 | --- | --- | --- | --- |
-| 1 | 参数设置与读取 | lorawan deveui <para1> | 设置\读取DevEUI<br />
+| 1 | 参数设置与读取 | lorawan deveui <para1> | <br />设置\读取DevEUI<br />
 - 有<para1>，设置DevEUI的值,16进制，8个字节<br />
 - 无 para1，读取当前DevEUI的值<br /> |
-| 2 |  | lorawan appeui <para1> | 设置\读取AppEUI<br />
+| 2 |  | lorawan appeui <para1> | <br />设置\读取AppEUI<br />
 - 有<para1>，设置AppEUI的值,16进制，8个字节<br />
 - 无 para1，读取当前AppEUI的值<br /> |
-| 3 |  | lorawan appkey <para1> | 设置\读取AppKey<br />
+| 3 |  | lorawan appkey <para1> | <br />设置\读取AppKey<br />
 - 有<para1>，设置AppKey的值,16进制，16个字节<br />
 - 无 para1，读取当前AppKey的值<br /> |
-| 4 |  | lorawan devaddr <para1> | 设置\读取DevAddr<br />
+| 4 |  | lorawan devaddr <para1> | <br />设置\读取DevAddr<br />
 - 有<para1>，设置DevAddr的值,16进制，4个字节,仅适用于ABP<br />
 - 无 para1，读取当前DevAddr的值<br /> |
-| 5 |  | lorawan appskey <para1> | 设置\读取AppSKey
-- 有<para1>，设置AppSKey的值,16进制，16个字节,仅适用于ABP
-- 无 para1，读取当前AppSKey的值
- |
-| 6 |  | lorawan nwkskey <para1> | 设置\读取NwkSKey(NwkSEncKey)
-- 有<para1>，设置NwkSKey的值,16进制，16个字节,仅适用于ABP
-- 无 para1，读取当前NwkSKey的值
- |
-| 7 |  | lorawan class <para1> | 设置\读取 Class类型
-- 有<para1>，设置Class的值,1个字节
-   - 0 - Class A
-   - 1 - Class B
-   - 2 - Class C
-- 无 para1，读取当前Class的值
- |
-| 8 |  | lorawan confirm <para1> | 设置\读取 数据传输类型 Confirm\Unconfirm
-- 有<para1>，设置数据传输类型的值,1个字节
-   - 0 - UnConfirm
-   - 1 - Confirm
-- 无 para1，读取当前数据传输类型的值
- |
-| 9 |  | lorawan activation <para1> | 设置\读取 设备激活方式
-- 有<para1>，设置激活方式的值,1个字节
-   - 0 - OTAA
-   - 1 - ABP
-- 无 para1，读取当前激活方式的值
- |
-| 10 | 入网 | lorawan join <nbtrials><interval> | 启动入网
-- nbtrials：单次最大入网重试次数
-   - 0 - 停止入网
-   - 非0 -  入网重试次数
-- interval：入网包之间的发送间隔，单位：秒，最小周期8s
- |
-| 11 | 数据通信 | lorawan ping <nbtrials><interval> | LoRaWAN网络上下行链路质量测试
-在设备入网后，执行该指令，LoRaWAN终端发送指定数量的Link Check测试数据包，测试完成后，shell输出当前上下行无线链路质量结果
-- nbtrials：每次ping测试，发送的数据包总数
-   - 缺省nbtrials = 10
-- interval：ping数据包之间的发送间隔，单位：秒
- |
-| 12 |  | lorawan tx <mode><cfm><port><len><data> | 发送Class A数据包
-- mode 发送模式
-   - 0 - 停止周期性发送
-   - 1 - 立即发送一次
-   - 2 ~ 1500 - 按次数发送，执行该指令后，设备发送指定次数的数据包后停止，发送间隔为10s
-   - ＞1500 - 按周期发送，单位ms，执行该指令后，设备周期性发送
-- cfm 数据消息类型
-   - 0 - 非确认帧
-   - 1 - 确认帧
-- port 应用端口号
-   - 1~223
-- len - 数据包长度
-- data - 自定义发送数据包{x1,x2,x3...}，16进制格式
- |
+| 5 |  | lorawan appskey <para1> | <br />设置\读取AppSKey<br />
+- 有<para1>，设置AppSKey的值,16进制，16个字节,仅适用于ABP<br />
+- 无 para1，读取当前AppSKey的值<br /> |
+| 6 |  | lorawan nwkskey <para1> | <br />设置\读取NwkSKey(NwkSEncKey)<br />
+- 有<para1>，设置NwkSKey的值,16进制，16个字节,仅适用于ABP<br />
+- 无 para1，读取当前NwkSKey的值<br /> |
+| 7 |  | lorawan class <para1> | <br />设置\读取 Class类型<br />
+- 有<para1>，设置Class的值,1个字节<br />
+   - 0 - Class A<br />
+   - 1 - Class B<br />
+   - 2 - Class C<br />
+- 无 para1，读取当前Class的值<br /> |
+| 8 |  | lorawan confirm <para1> | <br />设置\读取 数据传输类型 Confirm\Unconfirm<br />
+- 有<para1>，设置数据传输类型的值,1个字节<br />
+   - 0 - UnConfirm<br />
+   - 1 - Confirm<br />
+- 无 para1，读取当前数据传输类型的值<br /> |
+| 9 |  | lorawan activation <para1> | 设置\读取 设备激活方式<br />
+- 有<para1>，设置激活方式的值,1个字节<br />
+   - 0 - OTAA<br />
+   - 1 - ABP<br />
+- 无 para1，读取当前激活方式的值<br /> |
+| 10 | 入网 | lorawan join <nbtrials><interval> | 启动入网<br />
+- nbtrials：单次最大入网重试次数<br />
+   - 0 - 停止入网<br />
+   - 非0 -  入网重试次数<br />
+- interval：入网包之间的发送间隔，单位：秒，最小周期8s<br /> |
+| 11 | 数据通信 | lorawan ping <nbtrials><interval> | LoRaWAN网络上下行链路质量测试<br />
+在设备入网后，执行该指令，LoRaWAN终端发送指定数量的Link Check测试数据包，测试完成后，shell输出当前上下行无线链路质量结果<br />
+- nbtrials：每次ping测试，发送的数据包总数<br />
+   - 缺省nbtrials = 10<br />
+- interval：ping数据包之间的发送间隔，单位：秒<br /> |
+| 12 |  | lorawan tx <mode><cfm><port><len><data> | 发送Class A数据包<br />
+- mode 发送模式<br />
+   - 0 - 停止周期性发送<br />
+   - 1 - 立即发送一次<br />
+   - 2 ~ 1500 - 按次数发送，执行该指令后，设备发送指定次数的数据包后停止，发送间隔为10s<br />
+   - ＞1500 - 按周期发送，单位ms，执行该指令后，设备周期性发送<br />
+- cfm 数据消息类型<br />
+   - 0 - 非确认帧<br />
+   - 1 - 确认帧<br />
+- port 应用端口号<br />
+   - 1~223<br />
+- len - 数据包长度<br />
+- data - 自定义发送数据包{x1,x2,x3...}，16进制格式<br /> |
 
 测试示例：
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603407358137-619d136b-2d3b-4c0b-9d1b-cc7da562cb56.png#align=left&display=inline&height=386&margin=%5Bobject%20Object%5D&name=image.png&originHeight=386&originWidth=1089&size=61389&status=done&style=none&width=1089)
