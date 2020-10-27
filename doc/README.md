@@ -201,16 +201,15 @@ static void lorawan_ed_receive_message(lorawan_ed_appdata_t *app_data)
 # 4 版本更新历史 Change log
 
 ## 4.1 LoRaWAN-ED-Stack 1.0.0 pre-released 20.10.27
-
-    - LoRaWAN-ED-Stack1.0.0 基于LoRaMac-node 4.4.4 released版本
-        - 支持lorawan regional parameters 1.0.3
-        - 协议栈本身的实现最大程度保持LoRaMAC-node保持一致，便于后续持续更新
-        - 修复下行Buffer潜在的溢出风险漏洞 （腾讯安全团队）
-    - 支持lorawan-ed-test-shell命令快速进行LoRaWAN End-Device参数配置与功能验证、测试等
-    - 支持menuconfig进行lorawan协议参数的灵活配置
-    - 支持LoRaWAN地区规范(region)
-        - [x] CN470
-        - [x] CN470自定义同频
+- LoRaWAN-ED-Stack1.0.0 基于LoRaMac-node 4.4.4 released版本
+    - 支持lorawan regional parameters 1.0.3
+    - 协议栈本身的实现最大程度保持LoRaMAC-node保持一致，便于后续持续更新
+    - 修复下行Buffer潜在的溢出风险漏洞 （腾讯安全团队）
+- 支持lorawan-ed-test-shell命令快速进行LoRaWAN End-Device参数配置与功能验证、测试等
+- 支持menuconfig进行lorawan协议参数的灵活配置
+- 支持LoRaWAN地区规范(region)
+    - [x] CN470
+    - [x] CN470自定义同频
 
 # 5 参考
 
