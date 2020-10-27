@@ -161,6 +161,7 @@ lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Dev
 | 12 |  | lorawan tx <mode><cfm><port><len><data> | 发送Class A数据包<br />- mode 发送模式<br />   - 0 - 停止周期性发送<br />   - 1 - 立即发送一次<br />   - 2 ~ 1500 - 按次数发送，执行该指令后，设备发送指定次数的数据包后停止，发送间隔为10s<br />   - ＞1500 - 按周期发送，单位ms，执行该指令后，设备周期性发送<br />- cfm 数据消息类型<br />   - 0 - 非确认帧<br />   - 1 - 确认帧<br />- port 应用端口号<br />   - 1~223<br />- len - 数据包长度<br />- data - 自定义发送数据包{x1,x2,x3...}，16进制格式<br /> |
 | 13 | 保存 | lorawan save <type> | 保存配置信息到Flash（需要硬件支持easyflash）<br />- type 保存类型<br />   - dev - 设备身份信息(DevEUI、AppEUI、AppKey等)<br />   - cfg - LoRaWAN工作参数(Class Type、OTAA\ABP等)<br /> |
 | 14 | 恢复出厂设置 | lorawan factory  | 恢复LoRaWAN工作参数为出厂值 |
+    
 测试示例：
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603407358137-619d136b-2d3b-4c0b-9d1b-cc7da562cb56.png#align=left&display=inline&height=386&margin=%5Bobject%20Object%5D&name=image.png&originHeight=386&originWidth=1089&size=61389&status=done&style=none&width=1089)
 入网示例（标准CN470-OTAA-ClassA）
