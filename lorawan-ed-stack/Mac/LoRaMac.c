@@ -55,10 +55,6 @@
 #ifdef LORAWAN_ED_STACK_USING_ON_RTOS_RT_THREAD
 
 #define EV_LORAMAC_PROCESS_NOTIFY       0x0001
-#define EV_LORAMAC_PROCESS_TXDONE       0x0002
-#define EV_LORAMAC_PROCESS_RXDONE       0x0001
-#define EV_LORAMAC_PROCESS_NOTIFY       0x0001
-#define EV_LORAMAC_PROCESS_NOTIFY       0x0001
 
 static struct rt_event loramac_event;
 static struct rt_thread loramac_thread;
