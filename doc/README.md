@@ -144,7 +144,7 @@ RT-Thread online packages --->
 ## 3.1 lorawan-ed-test-shell
 lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Device相关MAC、PHY等参数，并进行LoRaWAN入网、Class A通信等测试验证。
 当前支持的命令如下
-![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603793396782-2e95b8c5-0702-4784-a086-b47998700915.png#align=left&display=inline&height=328&margin=%5Bobject%20Object%5D&name=image.png&originHeight=328&originWidth=834&size=39350&status=done&style=none&width=834)
+<br />![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1604024396415-be877105-b1e2-4f2e-ad4b-555cbb62378b.png#align=left&display=inline&height=355&margin=%5Bobject%20Object%5D&name=image.png&originHeight=355&originWidth=1064&size=56622&status=done&style=none&width=1064)
 | 序号 | 命令类型 | finish命令 | 说明 |
 | --- | --- | --- | --- |
 | 1 | 参数设置与读取 | lorawan deveui <para1> | 设置\读取DevEUI<br />- 有<para1>，设置DevEUI的值,16进制，8个字节<br />- 无 para1，读取当前DevEUI的值<br /> |
@@ -159,14 +159,14 @@ lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Dev
 | 10 | 入网 | lorawan join <nbtrials><interval> | 启动入网<br />- nbtrials：单次最大入网重试次数<br />   - 0 - 停止入网<br />   - 非0 -  入网重试次数<br />- interval：入网包之间的发送间隔，单位：秒，最小周期8s<br /> |
 | 11 | 数据通信 | lorawan ping <nbtrials><interval> | LoRaWAN网络上下行链路质量测试<br />在设备入网后，执行该指令，LoRaWAN终端发送指定数量的Link Check测试数据包，测试完成后，shell输出当前上下行无线链路质量结果<br />- nbtrials：每次ping测试，发送的数据包总数<br />   - 缺省nbtrials = 10<br />- interval：ping数据包之间的发送间隔，单位：秒<br /> |
 | 12 | 数据通信 | lorawan tx <mode><cfm><port><len><data> | 发送Class A数据包<br />- mode 发送模式<br />   - 0 - 停止周期性发送<br />   - 1 - 立即发送一次<br />   - 2 ~ 1500 - 按次数发送，执行该指令后，设备发送指定次数的数据包后停止，发送间隔为10s<br />   - ＞1500 - 按周期发送，单位ms，执行该指令后，设备周期性发送<br />- cfm 数据消息类型<br />   - 0 - 非确认帧<br />   - 1 - 确认帧<br />- port 应用端口号<br />   - 1~223<br />- len - 数据包长度<br />- data - 自定义发送数据包{x1,x2,x3...}，16进制格式<br /> |
-| 13 | 保存 | lorawan save <type> | 保存配置信息到Flash（需要硬件支持easyflash）<br />- type 保存类型<br />   - dev - 设备身份信息(DevEUI、AppEUI、AppKey等)<br />   - cfg - LoRaWAN工作参数(Class Type、OTAA\ABP等)<br /> |
+| 13 | 保存 | lorawan save <type> | 保存配置信息到Flash（需要硬件支持easyflash），<type>缺省情况下，默认保存为<cfg><br />- type 保存类型<br />   - dev - 设备身份信息(DevEUI、AppEUI、AppKey等)<br />   - cfg - LoRaWAN工作参数(Class Type、OTAA\ABP等)<br /> |
 | 14 | 恢复出厂设置 | lorawan factory  | 恢复LoRaWAN工作参数为出厂值 |
     
 测试示例：
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603407358137-619d136b-2d3b-4c0b-9d1b-cc7da562cb56.png#align=left&display=inline&height=386&margin=%5Bobject%20Object%5D&name=image.png&originHeight=386&originWidth=1089&size=61389&status=done&style=none&width=1089)
-入网示例（标准CN470-OTAA-ClassA）
+OTAA入网测试（标准CN470-OTAA-ClassA）
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603407412072-49ea8b01-e9bb-41e5-ae82-34fe79952639.png#align=left&display=inline&height=443&margin=%5Bobject%20Object%5D&name=image.png&originHeight=443&originWidth=1164&size=153163&status=done&style=none&width=1164)
-入网示例（CN470自定义-OTAA-ClassA）
+OTAA入网测试（CN470自定义-OTAA-ClassA）
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603410298124-6d8d3035-1a74-4d39-92db-92faaf5377f0.png#align=left&display=inline&height=851&margin=%5Bobject%20Object%5D&name=image.png&originHeight=851&originWidth=1312&size=440741&status=done&style=none&width=1312)
 非确认帧通信测试（CN470自定义-OTAA-ClassA）
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603411743124-8ec7c180-22dc-4b56-a0dc-3a0e4652120e.png#align=left&display=inline&height=804&margin=%5Bobject%20Object%5D&name=image.png&originHeight=804&originWidth=1501&size=186279&status=done&style=none&width=1501)
@@ -174,7 +174,8 @@ lorawan-ed-test-shell提供了常用的shell命令，用来读写LoRaWAN End-Dev
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603410266966-8205af56-b133-4ca2-8aa2-09ab29392b68.png#align=left&display=inline&height=1231&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1231&originWidth=1500&size=254888&status=done&style=none&width=1500)
 lorawan ping测试（标准CN470-OTAA-ClassA）
 ![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1603758595350-031389bc-efd5-4ad7-9790-fedf9cb53ed8.png#align=left&display=inline&height=1440&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1440&originWidth=1525&size=261428&status=done&style=none&width=1525)
-入网与服务器主动下发下行数据（标准CN470-OTAA-Class C）
+入网与服务器主动下发下行数据测试（标准CN470-OTAA-Class C）
+![image.png](https://cdn.nlark.com/yuque/0/2020/png/253586/1604030596575-0d02f799-6cb8-4979-a865-66cefc2cd66f.png#align=left&display=inline&height=2022&margin=%5Bobject%20Object%5D&name=image.png&originHeight=2022&originWidth=1489&size=384752&status=done&style=none&width=1489)<br />ABP直接通信测试（CN470自定义-ABP-Class A-掉电参数）
 ## 3.2 应用层调用说明
 
 
