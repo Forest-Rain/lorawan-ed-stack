@@ -71,7 +71,7 @@ static lorawan_ed_device_id_info_t lorawan_ed_device_id =
    .NwkKey = LORAWAN_APP_KEY,
 #endif
 
-#ifdef LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP
+#if ( defined LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP ) || (defined LORAWAN_ED_STACK_USING_ACTIVATION_TYPE_ABP)
    .DevAddr = LORAWAN_DEVICE_ADDRESS,
    .AppSKey = LORAWAN_APP_S_KEY,
    .NwkSEncKey = LORAWAN_NWK_S_ENC_KEY,
@@ -442,7 +442,7 @@ static void MlmeIndication( MlmeIndication_t *MlmeIndication )
             }
             else
             {
-                LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "BEACON NOT RECEIVED\n\r");
+                LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "BEACON NOT RECEIVED\r\n");
             }
             break;
         }
@@ -492,7 +492,7 @@ uint8_t lorawan_ed_set_joineui(uint8_t *joineui)
 
     mibReq.Type = MIB_DEV_EUI;
     mibReq.Param.DevEui = joineui;
-    status = LoRaMacMibGetRequestConfirm( &mibReq );
+    status = LoRaMacMibSetRequestConfirm( &mibReq );
 
     if(status == LORAMAC_STATUS_OK )
     {
@@ -538,6 +538,35 @@ uint8_t* lorawan_ed_get_appkey(void)
     return lorawan_ed_device_id.AppKey;
 }
 
+
+
+/**
+ *  lorawan set devaddr
+ */
+uint8_t lorawan_ed_set_devaddr(uint8_t *devaddr)
+{
+    MibRequestConfirm_t mibReq;
+    LoRaMacStatus_t status;
+
+    lorawan_ed_device_id.DevAddr = devaddr[0] << 24 | devaddr[1] << 16 | devaddr[2] << 8 | devaddr[3];
+    mibReq.Type = MIB_DEV_ADDR;
+    mibReq.Param.DevAddr = lorawan_ed_device_id.DevAddr;
+    status = LoRaMacMibSetRequestConfirm( &mibReq );
+
+    if(status == LORAMAC_STATUS_OK )
+    {
+        return RT_EOK;
+    }
+    return RT_ERROR;
+}
+
+/**
+ *  lorawan get devaddr
+ */
+uint32_t lorawan_ed_get_devaddr(void)
+{
+    return lorawan_ed_device_id.DevAddr;
+}
 
 /**
  *  lorawan set appskey
@@ -866,7 +895,7 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
     }
 #endif /* LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_OTAA */
 
-#ifdef LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP
+#if ( defined LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP ) || (defined LORAWAN_ED_STACK_USING_ACTIVATION_TYPE_ABP)
     if ( lorawan_ed_init_params.ActivationType == LORAWAN_ED_ACTIVATION_TYPE_ABP )
     {
 #ifdef LORAWAN_ED_STACK_MAC_PARAMETER_DEVADDR
@@ -913,8 +942,8 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
 #endif /* LORAWAN_ED_STACK_USING_LORAWAN_SPECIFICATION_V1_1_X */
 
         LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "Activation Type: ABP");
-        //LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,  "-DevEui= %02X-%02X-%02X-%02X-%02X-%02X-%02X-%02X\n\r", HEX8(devEui));
-        LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "-DevAdd:  %08X\n\r", lorawan_ed_device_id.DevAddr);
+        //LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,  "-DevEui= %02X-%02X-%02X-%02X-%02X-%02X-%02X-%02X\r\n", HEX8(devEui));
+        LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "-DevAddr: %08X", lorawan_ed_device_id.DevAddr);
         LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "-AppSKey: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X", HEX16(lorawan_ed_device_id.AppSKey));
         LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "-NwkSEncKey: %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X", HEX16(lorawan_ed_device_id.NwkSEncKey));
 #if LORAWAN_ED_STACK_USING_LORAWAN_SPECIFICATION_V1_1_X
@@ -928,6 +957,10 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
 
         mibReq.Type = MIB_DEV_ADDR;
         mibReq.Param.DevAddr = lorawan_ed_device_id.DevAddr;
+        LoRaMacMibSetRequestConfirm( &mibReq );
+
+        mibReq.Type = MIB_S_NWK_S_INT_KEY;
+        mibReq.Param.SNwkSIntKey = lorawan_ed_device_id.NwkSEncKey;
         LoRaMacMibSetRequestConfirm( &mibReq );
 
         mibReq.Type = MIB_NWK_S_ENC_KEY;
@@ -992,6 +1025,7 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
     mibReq.Param.AdrEnable = lorawan_ed_init_params.AdrEnable;
     LoRaMacMibSetRequestConfirm( &mibReq );
     LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "ADR:              %s", mibReq.Param.AdrEnable?"Enable":"Disable"); 
+    LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "Datarate:         DR_%d", lorawan_ed_init_params.TxDatarate);
 
 #if defined( REGION_EU868 ) || defined( REGION_RU864 ) || defined( REGION_CN779 ) || defined( REGION_EU433 )
     LoRaMacTestSetDutyCycleOn( LORAWAN_DUTYCYCLE_ON );
@@ -1008,7 +1042,7 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
     /*set Mac statein Idle*/
     LoRaMacStart( );
 
-#ifdef LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP
+#if ( defined LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP ) || (defined LORAWAN_ED_STACK_USING_ACTIVATION_TYPE_ABP)
     if ( lorawan_ed_init_params.ActivationType == LORAWAN_ED_ACTIVATION_TYPE_ABP )
     {
         lorawan_ed_app_callback->lorawan_ed_joined();
@@ -1020,65 +1054,74 @@ LoRaMacStatus_t lorawan_ed_start_join_network( void )
 {
     LoRaMacStatus_t status = LORAMAC_STATUS_OK;
 #ifdef LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_OTAA
-    static uint32_t join_request_trials_max_base = 0;
-    static uint32_t join_request_start_timestamp = 0;
-    static int8_t join_request_datarata = -1;
-    
-    MlmeReq_t mlmeReq;
-
-    /* first time using the user define datarate */
-    if(join_request_datarata == -1)
+    if ( lorawan_ed_init_params.ActivationType == LORAWAN_ED_ACTIVATION_TYPE_OTAA )
     {
-        join_request_datarata = lorawan_ed_init_params.TxDatarate;
-    }
+        static uint32_t join_request_trials_max_base = 0;
+        static uint32_t join_request_start_timestamp = 0;
+        static int8_t join_request_datarata = -1;
 
-    GetPhyParams_t getPhy;
-    PhyParam_t phyParam;
+        MlmeReq_t mlmeReq;
 
-    join_request_trials++;
-    if( ( join_request_trials - 1) % 2 )
-    {
-        /* every twice lower tx datarate */
-        getPhy.Attribute = PHY_NEXT_LOWER_TX_DR;
-        getPhy.Datarate = join_request_datarata;
-        phyParam = RegionGetPhyParam( LORAMAC_REGION_CN470S, &getPhy );
-        join_request_datarata = phyParam.Value;
-    }
-
-    mlmeReq.Type = MLME_JOIN;
-    mlmeReq.Req.Join.Datarate = join_request_datarata;
-#ifdef LORAWAN_ED_STACK_CETIFICATE_TEST_ENABLE
-    JoinParameters = mlmeReq.Req.Join;
-#endif
-
-    if( join_request_start_timestamp == 0 )
-    {
-        join_request_start_timestamp = TimerGetCurrentTime();
-    }
-    
-    if( join_request_trials <= ( join_request_trials_max_base + join_request_trials_max ) )
-    {
-        LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Join-Request @ (%d / %d) with DR=%d ==== ######", join_request_trials, (join_request_trials_max_base + join_request_trials_max), mlmeReq.Req.Join.Datarate);
-        status = LoRaMacMlmeRequest( &mlmeReq );
-        LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Join-Request: %s ==== ######",loramac_status_strings[status] );
-        if( status == LORAMAC_STATUS_OK )
+        /* first time using the user define datarate */
+        if(join_request_datarata == -1)
         {
-            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Joining ==== ######" );
+            join_request_datarata = lorawan_ed_init_params.TxDatarate;
+        }
+
+        GetPhyParams_t getPhy;
+        PhyParam_t phyParam;
+
+        join_request_trials++;
+        if( ( join_request_trials - 1) % 2 )
+        {
+            /* every twice lower tx datarate */
+            getPhy.Attribute = PHY_NEXT_LOWER_TX_DR;
+            getPhy.Datarate = join_request_datarata;
+            phyParam = RegionGetPhyParam( LORAMAC_REGION_CN470S, &getPhy );
+            join_request_datarata = phyParam.Value;
+        }
+    
+        mlmeReq.Type = MLME_JOIN;
+        mlmeReq.Req.Join.Datarate = join_request_datarata;
+    #ifdef LORAWAN_ED_STACK_CETIFICATE_TEST_ENABLE
+        JoinParameters = mlmeReq.Req.Join;
+    #endif
+    
+        if( join_request_start_timestamp == 0 )
+        {
+            join_request_start_timestamp = TimerGetCurrentTime();
+        }
+
+        if( join_request_trials <= ( join_request_trials_max_base + join_request_trials_max ) )
+        {
+            LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Join-Request @ (%d / %d) with DR=%d ==== ######", join_request_trials, (join_request_trials_max_base + join_request_trials_max), mlmeReq.Req.Join.Datarate);
+            status = LoRaMacMlmeRequest( &mlmeReq );
+            LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Join-Request: %s ==== ######",loramac_status_strings[status] );
+            if( status == LORAMAC_STATUS_OK )
+            {
+                LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Joining ==== ######" );
+            }
+            else
+            {
+                if( status == LORAMAC_STATUS_DUTYCYCLE_RESTRICTED )
+                {
+                    LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "Next Tx in  : %lu [ms]\n", mlmeReq.ReqReturn.DutyCycleWaitTime );
+                }
+            }
         }
         else
         {
-            if( status == LORAMAC_STATUS_DUTYCYCLE_RESTRICTED )
-            {
-                LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "Next Tx in  : %lu [ms]\n", mlmeReq.ReqReturn.DutyCycleWaitTime );
-            }
+            LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Join Failed(%d),Cost time:%d sec, Please Check DEVEUI-JOINEUI-APPKEY... ==== ######\n",(join_request_trials - 1),( TimerGetCurrentTime() - join_request_start_timestamp )/1000);
+            join_request_trials_max_base = join_request_trials - 1;
         }
     }
-    else
-    {
-        LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"###### ===== Join Failed(%d),Cost time:%d sec, Please Check DEVEUI-JOINEUI-APPKEY... ==== ######\n",(join_request_trials - 1),( TimerGetCurrentTime() - join_request_start_timestamp )/1000);
-        join_request_trials_max_base = join_request_trials - 1;
-    }
+#endif
 
+#if ( defined LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP ) || (defined LORAWAN_ED_STACK_USING_ACTIVATION_TYPE_ABP)
+    if ( lorawan_ed_init_params.ActivationType == LORAWAN_ED_ACTIVATION_TYPE_ABP )
+    {
+        lorawan_ed_app_callback->lorawan_ed_joined();
+    }
 #endif
     return status;
 }
@@ -1263,7 +1306,7 @@ lorawan_ed_error_status_t lorawan_ed_request_device_class( DeviceClass_t newClas
                 Errorstatus = lorawan_ed_beacon_req( );
 #else
                 LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,
-                        "warning: LORAWAN_ED_STACK_USING_DEVICE_TYPE_CLASS_B has not been defined at compilation\n\r");
+                        "warning: LORAWAN_ED_STACK_USING_DEVICE_TYPE_CLASS_B has not been defined at compilation\r\n");
 #endif /* LORAWAN_ED_STACK_USING_DEVICE_TYPE_CLASS_B */
                 break;
             }
@@ -1373,7 +1416,7 @@ static void beacon_Info_trace(MlmeIndication_t *mlmeIndication)
         snr = ( mlmeIndication->BeaconInfo.Snr & 0xFF ) >> 2;
     }  
     
-    LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"\r\n#= BEACON %lu =#, GW desc %d, rssi %d, snr %ld\r\n\r\n", \
+    LORAWAN_ED_DEBUG_LOG( LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL,"\r\n#= BEACON %lu =#, GW desc %d, rssi %d, snr %ld\r\n", \
                              mlmeIndication->BeaconInfo.Time, \
                              mlmeIndication->BeaconInfo.GwSpecific.InfoDesc, \
                              mlmeIndication->BeaconInfo.Rssi, \

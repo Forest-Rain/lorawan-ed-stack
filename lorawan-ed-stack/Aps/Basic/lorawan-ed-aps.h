@@ -25,8 +25,8 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 
-#define HEX16(X)  X[0],X[1], X[2],X[3], X[4],X[5], X[6],X[7],X[8],X[9], X[10],X[11], X[12],X[13], X[14],X[15]
-#define HEX8(X)   X[0],X[1], X[2],X[3], X[4],X[5], X[6],X[7]
+#define HEX16(X)  X[0],X[1],X[2],X[3],X[4],X[5],X[6],X[7],X[8],X[9],X[10],X[11],X[12],X[13],X[14],X[15]
+#define HEX8(X)   X[0],X[1],X[2],X[3],X[4],X[5],X[6],X[7]
 
 /*!
  * Application Data structure
@@ -289,6 +289,20 @@ uint8_t lorawan_ed_set_appkey(uint8_t *appkey);
  * @retval  appkey
  */
 uint8_t* lorawan_ed_get_appkey(void);
+
+/**
+ * @brief set devaddr
+ * @param [IN] *devaddr
+ * @retval  result
+ */
+uint8_t lorawan_ed_set_devaddr(uint8_t *devaddr);
+
+/**
+ * @brief get devaddr
+ * @param [IN] none
+ * @retval  devaddr
+ */
+uint32_t lorawan_ed_get_devaddr(void);
 
 /**
  * @brief set appskey
