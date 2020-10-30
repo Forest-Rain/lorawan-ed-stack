@@ -32,7 +32,10 @@
 
 #include "RegionCommon.h"
 #include "RegionIN865.h"
-#include "util_console.h"
+
+#define DBG_LVL             LOG_LVL_DBG
+#define LOG_TAG             "LoRaWAN.PHY.IN865"
+#include "lorawan-ed-debug.h"
 
 // Definitions
 #define CHANNELS_MASK_SIZE              1
@@ -163,6 +166,14 @@ static uint8_t CountNbOfEnabledChannels( bool joined, uint8_t datarate, uint16_t
 
     *delayTx = delayTransmission;
     return nbEnabledChannels;
+}
+
+static TimerTime_t GetTimeOnAir( int8_t datarate, uint16_t pktLen )
+{
+    int8_t phyDr = DataratesIN865[datarate];
+    uint32_t bandwidth = GetBandwidth( datarate );
+
+    return Radio.TimeOnAir( MODEM_LORA, bandwidth, phyDr, 1, 8, false, pktLen, true );
 }
 
 PhyParam_t RegionIN865GetPhyParam( GetPhyParams_t* getPhy )
@@ -369,9 +380,9 @@ void RegionIN865InitDefaults( InitDefaultsParams_t* params )
             NvmCtx.Channels[1] = ( ChannelParams_t ) IN865_LC2;
             NvmCtx.Channels[2] = ( ChannelParams_t ) IN865_LC3;
 
-            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL, " Channnel[%02d]: %d,%d",i,NvmCtx.Channels[0].Frequency,NvmCtx.Channels[0].DrRange.Value);
-            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL, " Channnel[%02d]: %d,%d",i,NvmCtx.Channels[1].Frequency,NvmCtx.Channels[1].DrRange.Value);
-            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL, " Channnel[%02d]: %d,%d",i,NvmCtx.Channels[2].Frequency,NvmCtx.Channels[2].DrRange.Value);
+            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL, " Channnel[%02d]: %d,%d",0,NvmCtx.Channels[0].Frequency,NvmCtx.Channels[0].DrRange.Value);
+            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL, " Channnel[%02d]: %d,%d",1,NvmCtx.Channels[1].Frequency,NvmCtx.Channels[1].DrRange.Value);
+            LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL, " Channnel[%02d]: %d,%d",2,NvmCtx.Channels[2].Frequency,NvmCtx.Channels[2].DrRange.Value);
 
             // Initialize the channels default mask
             NvmCtx.ChannelsDefaultMask[0] = LC( 1 ) + LC( 2 ) + LC( 3 );
@@ -657,7 +668,7 @@ bool RegionIN865TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     // Setup maximum payload lenght of the radio driver
     Radio.SetMaxPayloadLength( modem, txConfig->PktLen );
     // Get the time-on-air of the next tx frame
-    *txTimeOnAir = Radio.TimeOnAir( modem, txConfig->PktLen );
+    *txTimeOnAir = GetTimeOnAir( modem, txConfig->PktLen );
 
     *txPower = txPowerLimited;
 

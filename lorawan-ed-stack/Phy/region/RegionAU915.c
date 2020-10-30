@@ -32,7 +32,10 @@
 
 #include "RegionCommon.h"
 #include "RegionAU915.h"
-#include "util_console.h"
+
+#define DBG_LVL             LOG_LVL_DBG
+#define LOG_TAG             "LoRaWAN.PHY.AU915"
+#include "lorawan-ed-debug.h"
 
 // Definitions
 #define CHANNELS_MASK_SIZE              6
@@ -173,6 +176,14 @@ static uint8_t CountNbOfEnabledChannels( uint8_t datarate, uint16_t* channelsMas
 
     *delayTx = delayTransmission;
     return nbEnabledChannels;
+}
+
+static TimerTime_t GetTimeOnAir( int8_t datarate, uint16_t pktLen )
+{
+    int8_t phyDr = DataratesAU915[datarate];
+    uint32_t bandwidth = GetBandwidth( datarate );
+
+    return Radio.TimeOnAir( MODEM_LORA, bandwidth, phyDr, 1, 8, false, pktLen, true );
 }
 
 PhyParam_t RegionAU915GetPhyParam( GetPhyParams_t* getPhy )
@@ -679,7 +690,7 @@ bool RegionAU915TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     // Setup maximum payload lenght of the radio driver
     Radio.SetMaxPayloadLength( MODEM_LORA, txConfig->PktLen );
 
-    *txTimeOnAir = Radio.TimeOnAir( MODEM_LORA, txConfig->PktLen );
+    *txTimeOnAir = GetTimeOnAir( MODEM_LORA, txConfig->PktLen );
     *txPower = txPowerLimited;
 
     LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL,"[TX INFO]: CH[%d] = %d, DR%d(SF = %d), TxPower = %d, Len = %d, ToA = %d ms",
