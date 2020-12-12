@@ -239,7 +239,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
         // The server signals that it has pending data to be sent.
         // We schedule an uplink as soon as possible to flush the server.
         lorawan_ed_app_callback->lorawan_ed_tx_dummy( );
-    }
+     }
     // Check Buffer
     // Check BufferSize
     // Check Rssi
@@ -418,7 +418,7 @@ static void MlmeIndication( MlmeIndication_t *MlmeIndication )
         case MLME_SCHEDULE_UPLINK:
         {
             // The MAC signals that we shall provide an uplink as soon as possible
-            lorawan_ed_app_callback->lorawan_ed_tx_dummy( );			
+            lorawan_ed_app_callback->lorawan_ed_tx_dummy( );
             break;
         }
 #ifdef LORAWAN_ED_STACK_USING_DEVICE_TYPE_CLASS_B
@@ -859,10 +859,15 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
         for(uint8_t i = 0; i < 16;i++)
         {
             lorawan_ed_device_id.AppKey[i] = get_hex_byte(&appkey_str);
+#ifdef LORAWAN_ED_STACK_USING_LORAWAN_SPECIFICATION_V1_0_X
+            /* 1.0.x NwkKey must be equal to AppKey */
+            lorawan_ed_device_id.NwkKey[i] = lorawan_ed_device_id.AppKey[i];
+#endif
         }
 #endif
 
 #ifdef LORAWAN_ED_STACK_MAC_PARAMETER_NWKKEY
+        /* 1.1.x */
         char* nwkkey_str = LORAWAN_ED_STACK_MAC_PARAMETER_NWKKEY;
         for(uint8_t i = 0; i < 16;i++)
         {
