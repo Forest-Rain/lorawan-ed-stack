@@ -47,6 +47,12 @@
 #include "LoRaMacAdr.h"
 #include "LoRaMac.h"
 #include "lora-radio-timer.h" 
+#ifdef RT_USING_PM
+#include "drivers/pm.h"
+#ifndef PM_MAC_ID
+#define PM_MAC_ID  ( PM_MODULE_MAX_ID - 2 )
+#endif
+#endif
 
 #define DBG_LVL             DBG_INFO
 #define LOG_TAG             "LoRaWAN.MAC"
@@ -3400,7 +3406,13 @@ void loramac_thread_entry(void* parameter)
                                 RT_EVENT_FLAG_OR | RT_EVENT_FLAG_CLEAR,
                                 RT_WAITING_FOREVER, &ev) == RT_EOK)
         {
-             LoRaMacProcess();
+#ifdef RT_USING_PM
+            rt_pm_module_request(PM_MAC_ID, PM_SLEEP_MODE_NONE);
+            LoRaMacProcess();
+            rt_pm_module_release(PM_MAC_ID, PM_SLEEP_MODE_NONE);
+#else
+            LoRaMacProcess();
+#endif
         }
     }
 }
@@ -3669,6 +3681,7 @@ LoRaMacStatus_t LoRaMacInitialization( LoRaMacPrimitives_t* primitives, LoRaMacC
 LoRaMacStatus_t LoRaMacStart( void )
 {
     MacCtx.MacState = LORAMAC_IDLE;
+    Radio.Sleep();
     return LORAMAC_STATUS_OK;
 }
 

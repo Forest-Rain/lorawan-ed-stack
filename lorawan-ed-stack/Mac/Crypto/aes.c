@@ -62,6 +62,14 @@
 #  define VERSION_1
 #endif
 
+#ifndef EXIT_FAILURE
+#define EXIT_FAILURE 1
+#endif
+
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS 0
+#endif
+
 #include "aes.h"
 
 //#if defined( HAVE_UINT_32T )
