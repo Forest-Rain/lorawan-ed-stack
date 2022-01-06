@@ -491,7 +491,7 @@ uint8_t lorawan_ed_set_joineui(uint8_t *joineui)
     memcpy1(lorawan_ed_device_id.JoinEui, joineui, 8);
 
     mibReq.Type = MIB_JOIN_EUI;
-    mibReq.Param.DevEui = joineui;
+    mibReq.Param.JoinEui = joineui;
     status = LoRaMacMibSetRequestConfirm( &mibReq );
 
     if(status == LORAMAC_STATUS_OK )
@@ -520,7 +520,7 @@ uint8_t lorawan_ed_set_appkey(uint8_t *appkey)
     memcpy1(lorawan_ed_device_id.AppKey, appkey, 16);
 
     mibReq.Type = MIB_APP_KEY;
-    mibReq.Param.DevEui = appkey;
+    mibReq.Param.AppKey = appkey;
     status = LoRaMacMibSetRequestConfirm( &mibReq );
 
     if(status == LORAMAC_STATUS_OK )
