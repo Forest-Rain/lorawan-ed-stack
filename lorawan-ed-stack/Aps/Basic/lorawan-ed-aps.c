@@ -464,7 +464,7 @@ uint8_t lorawan_ed_set_deveui(uint8_t *deveui)
 
     mibReq.Type = MIB_DEV_EUI;
     mibReq.Param.DevEui = deveui;
-    status = LoRaMacMibGetRequestConfirm( &mibReq );
+    status = LoRaMacMibSetRequestConfirm( &mibReq );
 
     if( status == LORAMAC_STATUS_OK )
     {
@@ -490,7 +490,7 @@ uint8_t lorawan_ed_set_joineui(uint8_t *joineui)
 
     memcpy1(lorawan_ed_device_id.JoinEui, joineui, 8);
 
-    mibReq.Type = MIB_DEV_EUI;
+    mibReq.Type = MIB_JOIN_EUI;
     mibReq.Param.DevEui = joineui;
     status = LoRaMacMibSetRequestConfirm( &mibReq );
 
@@ -579,7 +579,7 @@ uint8_t lorawan_ed_set_appskey(uint8_t *appskey)
     memcpy1(lorawan_ed_device_id.AppSKey, appskey, 16);
 
     mibReq.Type = MIB_APP_S_KEY;
-    mibReq.Param.DevEui = appskey;
+    mibReq.Param.AppSKey = appskey;
     status = LoRaMacMibSetRequestConfirm( &mibReq );
 
     if(status == LORAMAC_STATUS_OK )
@@ -608,7 +608,7 @@ uint8_t lorawan_ed_set_nwkskey(uint8_t *nwkskey)
     memcpy1(lorawan_ed_device_id.NwkSEncKey, nwkskey, 16);
 
     mibReq.Type = MIB_NWK_S_ENC_KEY;
-    mibReq.Param.DevEui = nwkskey;
+    mibReq.Param.NwkSEncKey = nwkskey;
     status = LoRaMacMibSetRequestConfirm( &mibReq );
 
     if(status == LORAMAC_STATUS_OK )
@@ -1044,7 +1044,7 @@ void lorawan_ed_stack_init(lorawan_ed_app_callback_t *callbacks)
     LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_APS, DBG_LVL, "Channels Mask: %04X-%04X-%04X-%04X-%04X-%04X\r\n",
             channelMask[0], channelMask[1], channelMask[2], channelMask[3], channelMask[4], channelMask[5]);
 
-    /*set Mac statein Idle*/
+    /*set Mac state in Idle*/
     LoRaMacStart( );
 
 #if ( defined LORAWAN_ED_STACK_MAC_PARAMETER_ACTIVATION_TYPE_ABP ) || (defined LORAWAN_ED_STACK_USING_ACTIVATION_TYPE_ABP)
