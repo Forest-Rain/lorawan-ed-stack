@@ -690,7 +690,7 @@ bool RegionAU915TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     // Setup maximum payload lenght of the radio driver
     Radio.SetMaxPayloadLength( MODEM_LORA, txConfig->PktLen );
 
-    *txTimeOnAir = GetTimeOnAir( MODEM_LORA, txConfig->PktLen );
+    *txTimeOnAir = GetTimeOnAir( txConfig->Datarate, txConfig->PktLen );
     *txPower = txPowerLimited;
 
     LORAWAN_ED_DEBUG_LOG(LORAWAN_ED_STACK_DEBUG_PHY_REGION, DBG_LVL,"[TX INFO]: CH[%d] = %d, DR%d(SF = %d), TxPower = %d, Len = %d, ToA = %d ms",

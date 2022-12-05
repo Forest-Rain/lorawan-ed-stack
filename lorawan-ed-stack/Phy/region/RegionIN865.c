@@ -668,7 +668,7 @@ bool RegionIN865TxConfig( TxConfigParams_t* txConfig, int8_t* txPower, TimerTime
     // Setup maximum payload lenght of the radio driver
     Radio.SetMaxPayloadLength( modem, txConfig->PktLen );
     // Get the time-on-air of the next tx frame
-    *txTimeOnAir = GetTimeOnAir( modem, txConfig->PktLen );
+    *txTimeOnAir = GetTimeOnAir( txConfig->Datarate, txConfig->PktLen );
 
     *txPower = txPowerLimited;
 
